@@ -2,6 +2,7 @@
 from win32api import GetSystemMetrics
 import win32gui,win32con,win32api,os,re,subprocess
 import win32clipboard as w
+import win32com.client
 from .public import *
 
 #字母键
@@ -280,6 +281,22 @@ def 信息框(内容,标题='提示',类型=0,图标=0):
     图标类型 = {0:0,1:win32con.MB_ICONASTERISK,2:win32con.MB_ICONEXCLAMATION,3:win32con.MB_ICONERROR}
     return win32api.MessageBox(None,内容,标题,按钮类型[类型]|图标类型[图标])
 
+
+@异常处理返回类型逻辑型
+def 系统_朗读(内容):
+    '''
+    api创建的系统朗读
+    :param 内容:
+    :return: 出错返回0，正常返回值：1
+    '''
+    try:
+        speaker = win32com.client.Dispatch("sapi.spvoice")
+        speaker.Speak(内容)
+        return 1
+    except Exception as e:
+        print(e)
+        return 0
+    
 
 @异常处理返回类型逻辑型
 def 系统_建立关联文件(后缀,程序路径,图标=None):
